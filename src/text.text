@@ -1,0 +1,125 @@
+<< 클래스형 컴포넌트 >>
+
+1. props를 통해 컴포넌트 간 데이터 전달하기
+- 부모 컴포넌트 => 자식 컴포넌트로 데이터 전달 
+- 읽기 전용으로 자식 컴포넌트는 변경되지 않음 → 즉, 부모에서 값이 바껴야 자식도 바뀐다
+
+2. State
+- 무언가를 기억하기 위해 사용
+- 해당 컴포넌트 내부에서 데이터를 전달하기 위해 사용
+- 데이터가 변할 때 화면을 다시 렌더링 해주기 위해서는 React State 사용필요!
+
+★ 결국!! 값이 바껴야한다? state / 그냥 값만 내려주면 된다? props
+
+3. Constructor (생성자)
+- 인스턴스화된 객체에서 다른 메서드를 호출하기 전에 수행해야 하는 사용자 지정 초기화를 제공할 수 있다. 
+  즉, 초기설정
+
+4. Super
+- 자식 클래스 내에서 부모클래스의 '생성자' 또는 '메소드'를 호출할때 사용
+- 자바스크립트 문법 
+  super([arguments]); //부모 생성자 호출
+  super.functionOnParent([arguments]);
+
+- super 다음에 this 를 써줘야함 → this가 먼저 선언되면 error 발생
+- super 키워드로 값을 할당 
+- Constructor안에 this 키워드를 쓰고 싶으면 super 를 써줘야함!! 
+
+
+========================================================================
+< 리액트의 불변성 >
+원시타입(Boolean, String, Number, null, undefined, Symbol)
+ㄴ 고정된 크기로 Call Stack 메모리에 저장, 실제 데이터가 변수에 할당 
+
+참조타입(Object, Array)
+ㄴ 데이터 크기 미정
+ㄴ Call Stack 메모리에 저장 > 데이터의 값이 heap에 저장되며 변수에 heap메모리의 주소값이 할당
+ㄴ 불변성 유지 안되기때문에 신경쓸것!!
+ㄴ 원본 데이터 변경 메소드 => splice, push
+
+
+<컴포넌트>
+클래스형 컴포넌트 : 더 많은 기능 제공, 긴 코드양, 복잡한 코드, 더딘 성능
+함수형 컴포넌트 : 적은 기능 제공, 짧은 코드 양, 단순한 코드, 빠른 성능 
+
+========================================================================
+JSK Key 속성 
+- JSK 란? javascript를 확장한 문법
+- js 파일에 직접적인 html 을 return 해줌 (Square.js 내 Square 함수선언 확인)
+- 요소의 리스트를 나열할 때 Key를 넣어줘야함 
+- 리액트가 변경, 추가 또는 제거된 항목을 식별하는데 도움이 된다 
+- 리액트는 가상 돔을 이용해 바뀐 부분만 실제 돔에 적용 -> key를 이용해 식별 
+- key는 유니크한 값이 필요 (index는 비추천) -> 순차적으로 리스트에 추가되지 않고 리스트 사이에 추가되거나 제거되면 리스트의 인덱스 번호도 바뀜 (변경된일이없으면 index사용가능)
+========================================================================
+<< 성능 최적화 >>
+1. React Profiler - react-performance-app 파일 작업
+
+- react 16.5에서 새로운 DevTools 프로파일러 플러그인 지원 
+- Profiler API를 사용하여 React 애플리케이션의 성능 병목 현상을 식별하기 위해 랜더링되는 각 구성 요소에 대한 타이밍 정보 수집 
+
+- useEffect : 컴포넌트가 랜더링 될 때 특정 작업을 실행할 수 있도록 하는 Hook
+- fetch()메소드 : 원격 API에 요청을 보내기 위해 사용할 수 있는 메소드 
+ㄴ 즉, request을 보낸 다음 response 가 오면 그 response를 이용할 수 있게 해주는 메소드임
+
+useEffect(() => {
+  fetch('https://jsonplaceholder.typicode.com/posts')
+  .then(response => response.json()) 
+  .then(posts => setPosts(posts)) //posts는 큰 의미 없음(변수명)
+}, []);
+-> Response는 HTTP 응답 전체를 나타내는 객체라 json()를 이용하여 json형식으로 바꿔줌
+-> state 에 담아주기 위해 set을 사용
+
+2. React.memo() 란?
+- 먼저 컴포넌트를 렌더링 한 뒤, 이전에 렌더링 된 결과와 비교하여 DOM업데이트를 결정
+- 렌더링 결과가 이전과 다르다면, React는 DOM업데이트
+- props가 같다면 메모이징 된 내용을 재사용 -> ★ props가 자주 바뀌는 컴포넌트에선 지양할것!
+ㄴ props의 객체가 같다면 얕은 비교  
+
+★ 렌더링을 막기 위한 도구보다 성능 개선의 도구!! 로 기억할 것 
+
+const Message = React.memo(({ message }) => {
+  return <p>{message}</p>;
+});
+
+3. 리액트가 리렌더링 되는 경우 
+- state 변경이 있을 때
+- 부모 컴포넌트가 렌더링 될 때
+- 새로운 props이 들어올 때
+- shouldComponentUpdate에서 true가 반환될 때
+- forceUpdate가 실행될 때
+
+4. React.useCallback
+- 메모이제이션된 함수를 반환하는 함수 
+- useCallback 안에 콜백함수와 의존성 배열을 순서대로 넣기
+ex) const testFunc = useCallback(()=> {}, [])
+
+useMemo 도 동일하게 최적화하는 함수 
+
+========================================================================
+<< Axios >>
+1. Axios 란?
+: 브라우저, Node.js 를 위한 Promise API를 활용하는 [HTTP 비동기 통신 라이브러리]
+: 클라이언트와 서버 간의 데이터를 주고 받기 위함 
+: 바로 json 형태로 받음
+: fetch 대신 axios 를 많이 씀 -> fetch는 별도로 JSON.stringify() 형태변환해줘야함
+
+2. async & await
+fetch("jsonplace/user").then((response) => response.json()).then((data) => console.log(data));
+처리된 이후에 작업을 진행하고 싶을 때 then을 사용
+--> async & await는 보다 깔끔하게 사용가능함!  
+
+fetchData 그대로 쓰면 response 받는 곳에서 Promise가 반환됨 -> fullfilled
+async & await을 사용하면 Promise가 처리된 이후에 값을 받을 수 있음
+
+3. useEffect : snippet 사용시시 
+useEffect(() => {
+  first
+  return () => {
+    second
+  }
+}, [third])
+
+first : 로직추가
+second : 사용되지 않을때 second 호출
+[third] : 빈배열시 한번만 실행이지만 의존성 배열에 넣으면 그 값이 바뀔때마다 실행됨
+

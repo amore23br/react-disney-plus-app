@@ -1,19 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
-/**
- useEffect(() => {
-    first
-    return () => {
-      second
-    }
-  }, [third])
-
-first : 로직추가
-second : 사용되지 않을때 second 호출
-[third] : 빈배열시 한번만 실행이지만 의존성 배열에 넣으면 그 값이 바뀔때마다 실행됨
- */
-
 const Nav = () => {
   const [show, setShow] = useState(false);
 
