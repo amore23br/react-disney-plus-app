@@ -60,6 +60,7 @@ JSK Key 속성
 - useEffect : 컴포넌트가 랜더링 될 때 특정 작업을 실행할 수 있도록 하는 Hook
 - fetch()메소드 : 원격 API에 요청을 보내기 위해 사용할 수 있는 메소드 
 ㄴ 즉, request을 보낸 다음 response 가 오면 그 response를 이용할 수 있게 해주는 메소드임
+★ 데이터를 가져올 때 사용
 
 useEffect(() => {
   fetch('https://jsonplaceholder.typicode.com/posts')
@@ -90,7 +91,10 @@ const Message = React.memo(({ message }) => {
 
 4. React.useCallback
 - 메모이제이션된 함수를 반환하는 함수 
+- 컴컴포넌트가 렌더링 될 때마다 함수를 새로 생성하지 않고, 메모리에 저장된 함수를 재사용할 수 있도록 해주는 Hook
+- 랜더링 될 때마다 함수도 재실행 -> 이걸 막기 위해 useCallback 함수 사용
 - useCallback 안에 콜백함수와 의존성 배열을 순서대로 넣기
+- [] : dependency array, [] 안에 있는 값이 바뀔 때만 useCallback 안의 함수가 실행됨
 ex) const testFunc = useCallback(()=> {}, [])
 
 useMemo 도 동일하게 최적화하는 함수 
@@ -111,7 +115,7 @@ fetch("jsonplace/user").then((response) => response.json()).then((data) => conso
 fetchData 그대로 쓰면 response 받는 곳에서 Promise가 반환됨 -> fullfilled
 async & await을 사용하면 Promise가 처리된 이후에 값을 받을 수 있음
 
-3. useEffect : snippet 사용시시 
+3. useEffect : snippet 사용시 
 useEffect(() => {
   first
   return () => {
@@ -123,3 +127,31 @@ first : 로직추가
 second : 사용되지 않을때 second 호출
 [third] : 빈배열시 한번만 실행이지만 의존성 배열에 넣으면 그 값이 바뀔때마다 실행됨
 
+========================================================================
+<< React Router DOM >>
+
+- react 는 SPA(single page application)이기 때문에 index.html 하나만 가지고 있음 
+- js를 이용하여 다른 컴포넌트를 index.html 에 넣어 페이지 변경해줌
+=> 이때 React Router Dom 라이브러리가 새 컴포넌트로 라우팅/탐색을 하고 렌더링 하는데 도움을 줌
+
+- BrowserRouter : HTML5 History API(pushState, replaceState 및 popsState 이벤트)를 사용하여 UI를 URL과 동기화된 상태로 유지 
+
+- Routes : Routes는 앱에서 생성될 모든 개별 경로에 대한 컨테이너/상위 역할을 수행 / Route로 생성된 자식 컴포넌트 중에서 매칭되는 첫번째 Route를 렌더링 해줌
+
+- Route : 단일경로 만드는데 사용 
+  - path : url 경로 / 이름은 마음대로 설정 가능
+  - element : 렌더링돼야하는 컴포넌트  
+    ex) <Route path="teams" element={<Teams />} />
+  - index : 일치하는 경로가 없는 경우 기본 페이지로 설정 (/dashboard 경로가 없을 경우에도 해당 route로 이동함함)
+    ex) <Route index element={<Dashboard />} path="dashboard" />
+
+★ 중첩 라우팅 (nested routes) : react router의 강력한 기능
+<Route path="teams" element={<Teams />}>
+  <Route path=":teamId" element={<Team/>}/>
+</Route>
+--> localhost:3000/teams/13 경로 => Team 컴포넌트 
+
+- Outlet : 자식 경로 요소를 렌더링하려면 부모 경로 요소에서 <Outlet>을 사용해야함 
+☆ 즉, 중첩 라우팅을 이용해서 Route > Route로 쓸 경우 Outlet 컴포넌트를 넣어줘야하는것임 (vue 에서 slot과 비슷)
+
+- Link : HTML의 <a/> 와 유사 / to속성은 경로 
