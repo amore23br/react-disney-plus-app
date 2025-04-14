@@ -134,7 +134,8 @@ second : 사용되지 않을때 second 호출
 - js를 이용하여 다른 컴포넌트를 index.html 에 넣어 페이지 변경해줌
 => 이때 React Router Dom 라이브러리가 새 컴포넌트로 라우팅/탐색을 하고 렌더링 하는데 도움을 줌
 
-- BrowserRouter : HTML5 History API(pushState, replaceState 및 popsState 이벤트)를 사용하여 UI를 URL과 동기화된 상태로 유지 
+- BrowserRouter : HTML5 History API(pushState, replaceState 및 popsState 이벤트)를 사용하여 UI를 URL과 동기화된 상태로 유지
+ㄴ 새로고침 하지 않아도 주소 변경 가능, 현재 주소에 관련된 정보를 props로 조회/사용 가능 
 
 - Routes : Routes는 앱에서 생성될 모든 개별 경로에 대한 컨테이너/상위 역할을 수행 / Route로 생성된 자식 컴포넌트 중에서 매칭되는 첫번째 Route를 렌더링 해줌
 
@@ -142,13 +143,14 @@ second : 사용되지 않을때 second 호출
   - path : url 경로 / 이름은 마음대로 설정 가능
   - element : 렌더링돼야하는 컴포넌트  
     ex) <Route path="teams" element={<Teams />} />
-  - index : 일치하는 경로가 없는 경우 기본 페이지로 설정 (/dashboard 경로가 없을 경우에도 해당 route로 이동함함)
+  - index : 일치하는 경로가 없는 경우 기본 페이지로 설정 (/dashboard 경로가 없을 경우에도 해당 route로 이동함) > 즉, / 시작하면 index 페이지부터 보여줌
     ex) <Route index element={<Dashboard />} path="dashboard" />
 
 ★ 중첩 라우팅 (nested routes) : react router의 강력한 기능
 <Route path="teams" element={<Teams />}>
   <Route path=":teamId" element={<Team/>}/>
 </Route>
+- :teamId :는 다이나믹한 path 가 필요할 경우에 사용
 --> localhost:3000/teams/13 경로 => Team 컴포넌트 
 
 - Outlet : 자식 경로 요소를 렌더링하려면 부모 경로 요소에서 <Outlet>을 사용해야함 
