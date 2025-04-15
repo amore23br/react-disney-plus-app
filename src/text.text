@@ -159,6 +159,20 @@ second : 사용되지 않을때 second 호출
 ☆ 즉, 중첩 라우팅을 이용해서 Route > Route로 쓸 경우 Outlet 컴포넌트를 넣어줘야하는것임 (vue 에서 slot과 비슷)
 
 - Link : HTML의 <a/> 와 유사 / to속성은 경로 
+
+- useRef : 특정 DOM을 선택할 때 사용하는 React Hooks
+  - javascript에서는 getElementById, querySelector 같은 DOM Selector 함수 사용하여 Dom 선택
+  - React 에서는 ref 사용하여 Dom 선택
+  ex) function component(){
+    const myRef = useRef(null);
+    return (
+      <div ref={myRef}/>
+    )
+  }
+  - DOM을 직접 선택해야하는 경우 
+  1) 엘리먼트 크기를 가져와야 할 때
+  2) 스크롤바 위치를 가져와야 할 때
+  3) 엘리먼트에 포커스를 설정 해줘야 할 때
 ========================================================================
 << useDebounce >> - custom hooks
 
