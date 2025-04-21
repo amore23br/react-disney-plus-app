@@ -182,3 +182,15 @@ second : 사용되지 않을때 second 호출
 
 ========================================================================
 ☆ hook 을 처음 만들땐 use를 꼭 붙여주기 
+========================================================================
+<< Firebase >> 
+
+- 모바일 및 웹 애플리케이션을 만들기 위해 Google에서 개발한 플랫폼 
+
+* normal real time app
+  - Front-End : React.js 
+  - Back-End : Node.js, Database, socket.io
+* real time app w/firebase
+  - Front-End : React.js 
+  - Back-End : Firebase
+
